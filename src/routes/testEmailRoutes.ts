@@ -8,6 +8,8 @@ interface TestNotificationRequest {
   email: string;
   productId: string;
   telegramUsername?: string;
+  pincode?: string;
+  substore?: string;
 }
 
 /**
@@ -17,7 +19,7 @@ interface TestNotificationRequest {
  */
 router.post('/test-notification', async (req: Request<{}, {}, TestNotificationRequest>, res: Response): Promise<void> => {
   try {
-    const { email, productId, telegramUsername } = req.body;
+    const { email, productId, telegramUsername, pincode, substore } = req.body;
     
     if (!email || !productId) {
       res.status(400).json({
@@ -50,7 +52,7 @@ router.post('/test-notification', async (req: Request<{}, {}, TestNotificationRe
       }
     }
     
-    await fakeNotify(email, productId, telegramUsername);
+    await fakeNotify(email, productId, telegramUsername, pincode, substore);
     
     const notificationTypes = ['email'];
     if (telegramUsername) {

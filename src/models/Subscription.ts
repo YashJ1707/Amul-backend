@@ -4,6 +4,10 @@ export interface ISubscription extends Document {
   email: string;
   productId: string;
   telegramUsername?: string; // Optional telegram username
+  pincode?: string; // Optional pincode for location-based subscriptions
+  substore?: string; // Optional substore for location-based subscriptions
+  substoreId?: string;
+  state?: string;
   subscribedAt: Date;
   isActive: boolean;
   createdAt: Date;
@@ -31,6 +35,30 @@ const subscriptionSchema = new Schema<ISubscription>({
     trim: true,
     default: null
   },
+  pincode: {
+    type: String,
+    required: false,
+    trim: true,
+    default: null
+  },
+  substore: {
+    type: String,
+    required: false,
+    trim: true,
+    default: null
+  },
+  substoreId: {
+    type: String,
+    required: false,
+    trim: true,
+    default: null
+  },
+  state: {
+    type: String,
+    required: false,
+    trim: true,
+    default: null
+  },
   subscribedAt: { 
     type: Date, 
     default: Date.now 
@@ -46,6 +74,8 @@ const subscriptionSchema = new Schema<ISubscription>({
 // Compound indexes for better performance
 subscriptionSchema.index({ email: 1, productId: 1 }, { unique: true });
 subscriptionSchema.index({ productId: 1, isActive: 1 });
+subscriptionSchema.index({ pincode: 1, isActive: 1 });
+subscriptionSchema.index({ substore: 1, isActive: 1 });
 
 // Add method to get user email
 subscriptionSchema.statics.getUserEmail = async function(telegramUsername: string): Promise<string | null> {

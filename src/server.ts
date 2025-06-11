@@ -9,6 +9,7 @@ import subscriptionRoutes from '@/routes/subscriptionRoutes';
 import healthRoutes from '@/routes/healthRoutes';
 import testEmailRoutes from '@/routes/testEmailRoutes';
 import telegramRoutes from './routes/telegramRoutes';
+import { Substore } from '@/models/Substore';
 
 dotenv.config();
 
@@ -38,10 +39,15 @@ async function startServer(): Promise<void> {
     // Connect to MongoDB
     await connectDB();
     
-    // Initial data fetch
-    console.log('Fetching initial product data...');
-    await fetchAndUpdateProducts();
-    console.log('Initial data fetch completed');
+    // Initial data fetch for all substores
+    console.log('Fetching initial product data for all substores...');
+    const substores = await Substore.find({}, 'substoreId');
+    for (const substore of substores) {
+      if (substore.substoreId) {
+        await fetchAndUpdateProducts(substore.substoreId);
+      }
+    }
+    console.log('Initial data fetch for all substores completed');
     
     // Start cron jobs
     startCronJobs();

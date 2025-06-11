@@ -29,7 +29,7 @@ export const notifySubscribers = async (product: IProduct, updatedProductData: A
         from: process.env.EMAIL_USER,
         to: subscription.email,
         subject: `🎉 ${product.name} is Back in Stock!`,
-        html: generateEmailHTML(product, productUrl, updatedProductData.inventory_quantity)
+        html: generateEmailHTML(product, productUrl, updatedProductData.inventory_quantity, subscription.pincode, subscription.substoreId)
       };
       
       promises.push(
@@ -45,7 +45,7 @@ export const notifySubscribers = async (product: IProduct, updatedProductData: A
       // Send telegram notification if username is provided
       if (subscription.telegramUsername) {
         promises.push(
-          telegramService.sendProductNotification(subscription.telegramUsername, product, updatedProductData.inventory_quantity)
+          telegramService.sendProductNotification(subscription.telegramUsername, product, updatedProductData.inventory_quantity, subscription.pincode, subscription.substoreId)
             .then((success) => {
               if (!success) {
                 console.log(`💡 Tip: User @${subscription.telegramUsername} should start a conversation with the bot to receive notifications`);
@@ -67,7 +67,12 @@ export const notifySubscribers = async (product: IProduct, updatedProductData: A
   }
 };
 
-const generateEmailHTML = (product: IProduct, productUrl: string, quantity: number): string => {
+const generateEmailHTML = (product: IProduct, productUrl: string, quantity: number, pincode?: string, substoreId?: string): string => {
+  const locationInfo = pincode && substoreId ? 
+    `<div class="location-info">
+      <p>📍 Available for delivery in: ${substoreId} (${pincode})</p>
+    </div>` : '';
+
   return `
     <!DOCTYPE html>
     <html>
@@ -130,6 +135,14 @@ const generateEmailHTML = (product: IProduct, productUrl: string, quantity: numb
                 font-weight: bold; 
                 font-size: 14px; 
             }
+            .location-info {
+                background: #e3f2fd;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px 0;
+                font-size: 14px;
+                color: #1976d2;
+            }
             .cta-button { 
                 display: inline-block; 
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -177,6 +190,7 @@ const generateEmailHTML = (product: IProduct, productUrl: string, quantity: numb
                     <div class="product-name">${product.name}</div>
                     <div class="product-price">₹${product.price}</div>
                     <div class="stock-info">🔥 Only ${quantity} units available - Order quickly!</div>
+                    ${locationInfo}
                 </div>
                 
                 <p>Don't wait too long - popular items like this tend to sell out fast!</p>
@@ -205,7 +219,7 @@ const generateEmailHTML = (product: IProduct, productUrl: string, quantity: numb
   `;
 };
 
-export const fakeNotify = async (email: string, productId: string, telegramUsername?: string): Promise<void> => {
+export const fakeNotify = async (email: string, productId: string, telegramUsername?: string, pincode?: string, substoreId?: string): Promise<void> => {
   try {
     const product = await Product.findOne({ productId });
     if (!product) {
@@ -220,7 +234,7 @@ export const fakeNotify = async (email: string, productId: string, telegramUsern
       from: process.env.EMAIL_USER,
       to: email,
       subject: `🎉 ${product.name} is Back in Stock!`,
-      html: generateEmailHTML(product, productUrl, product.inventoryQuantity)
+      html: generateEmailHTML(product, productUrl, product.inventoryQuantity, pincode, substoreId)
     };
     
     try {
@@ -233,7 +247,7 @@ export const fakeNotify = async (email: string, productId: string, telegramUsern
     // Send telegram notification if username provided
     if (telegramUsername) {
       try {
-        const success = await telegramService.sendTestMessage(telegramUsername, product);
+        const success = await telegramService.sendProductNotification(telegramUsername, product, product.inventoryQuantity, pincode, substoreId);
         if (!success) {
           console.log(`💡 Tip: User @${telegramUsername} should start a conversation with the bot to receive notifications`);
         }
