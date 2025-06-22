@@ -49,7 +49,7 @@ const substores = [
 ];
 
 async function seed() {
-  await mongoose.connect(process.env.MONGODB_URI!);
+  await mongoose.connect("mongodb://localhost:27017/amul-inventory");
   for (const s of substores) {
     await Substore.updateOne(
       { alias: s.alias },
@@ -57,6 +57,7 @@ async function seed() {
       { upsert: true }
     );
   }
+  
   console.log('✅ Substore mapping seeded!');
   await mongoose.disconnect();
 }

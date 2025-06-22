@@ -10,7 +10,9 @@ const productSchema = new Schema<IProduct>({
   lastChecked: { type: Date, default: Date.now },
   image: { type: String },
   brand: { type: String },
-  wasOutOfStock: { type: Boolean, default: false }
+  wasOutOfStock: { type: Boolean, default: false },
+  isActive: {type: Boolean, default: false},
+  available: {type: Boolean, default: false}
 }, {
   timestamps: true
 });

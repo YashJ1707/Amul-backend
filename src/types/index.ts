@@ -10,6 +10,8 @@ export interface IProduct extends Document {
   image?: string;
   brand?: string;
   wasOutOfStock: boolean;
+  isActive: boolean;
+  available: boolean;
 }
 
 export interface ISubscription extends Document {

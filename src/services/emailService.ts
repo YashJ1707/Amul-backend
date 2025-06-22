@@ -33,13 +33,13 @@ export const notifySubscribers = async (product: IProduct, updatedProductData: A
       };
       
       promises.push(
-        transporter.sendMail(mailOptions)
-          .then(() => {
-            console.log(`📧 Email notification sent to ${subscription.email} for product ${product.name}`);
-          })
-          .catch((emailError) => {
-            console.error(`❌ Failed to send email to ${subscription.email}:`, emailError);
-          })
+        // transporter.sendMail(mailOptions)
+        //   .then(() => {
+        //     console.log(`📧 Email notification sent to ${subscription.email} for product ${product.name}`);
+        //   })
+        //   .catch((emailError) => {
+        //     console.error(`❌ Failed to send email to ${subscription.email}:`, emailError);
+        //   })
       );
       
       // Send telegram notification if username is provided
@@ -238,7 +238,7 @@ export const fakeNotify = async (email: string, productId: string, telegramUsern
     };
     
     try {
-      await transporter.sendMail(mailOptions);
+      // await transporter.sendMail(mailOptions);
       console.log(`📧 Test email notification sent to ${email} for product ${product.name}`);
     } catch (emailError) {
       console.error(`❌ Failed to send test email to ${email}:`, emailError);

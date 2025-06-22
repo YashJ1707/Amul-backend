@@ -38,10 +38,14 @@ async function startServer(): Promise<void> {
   try {
     // Connect to MongoDB
     await connectDB();
+
+    
     
     // Initial data fetch for all substores
     console.log('Fetching initial product data for all substores...');
     const substores = await Substore.find({}, 'substoreId');
+    console.log(substores);
+    
     for (const substore of substores) {
       if (substore.substoreId) {
         await fetchAndUpdateProducts(substore.substoreId);

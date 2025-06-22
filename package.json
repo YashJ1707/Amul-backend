@@ -19,7 +19,8 @@
     "type-check": "tsc --noEmit",
     "migrate-telegram-username": "tsx src/scripts/migrate-telegram-username.ts",
     "check-products": "tsx src/scripts/check-products.ts",
-    "activate-products": "tsx src/scripts/activate-products.ts"
+    "activate-products": "tsx src/scripts/activate-products.ts",
+    "seed-substores": "tsx src/scripts/seed-substores.ts"
   },
   "keywords": [],
   "author": "",

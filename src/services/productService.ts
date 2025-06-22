@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Product } from '@/models/Product';
 import { notifySubscribers } from './emailService';
-import { AmulProductData } from '@/types';
 
 const AMUL_API_BASE_URL = 'https://shop.amul.com/api/1';
 
@@ -69,7 +68,8 @@ export const fetchAndUpdateProducts = async (substoreId: string): Promise<void> 
             image: productData.images?.[0]?.url,
             alias: productData.alias,
             inventoryQuantity: productData.inventory_quantity,
-            isActive: true
+            isActive: true,
+            available: productData.available
           },
           { new: true }
         );
@@ -89,7 +89,8 @@ export const fetchAndUpdateProducts = async (substoreId: string): Promise<void> 
           image: productData.images?.[0]?.url,
           alias: productData.alias,
           inventoryQuantity: productData.inventory_quantity,
-          isActive: true
+          isActive: true,
+          available: productData.available
         });
       }
     }

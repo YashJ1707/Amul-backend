@@ -154,23 +154,25 @@ class TelegramService {
       const username = msg.from?.username;
       const email = await this.getUserEmail(chatId, username);
       const userSub = await Subscription.findOne({ telegramUsername: username, isActive: true });
+      console.log(await Subscription.find());
+      
       console.log(`[TG] /products command - User subscription details:`, {
         username,
         email,
-        state: userSub?.state,
-        substoreId: userSub?.substoreId,
-        pincode: userSub?.pincode
+        state: "Pune-Br",
+        substoreId: "66506004a7cddee1b8adb014",
+        pincode: 411036
       });
-      if (!email || email === 'waiting' || !userSub?.state) {
+      if (!email || email === 'waiting') {
         await this.bot.sendMessage(chatId, '❌ Please set your email and location (6-digit pincode) first using /setemail and /setlocation.');
         return;
       }
-      if (!userSub?.substoreId) {
-        await this.bot.sendMessage(chatId, '❌ Sorry, we could not determine your delivery region for this pincode. Please try a different pincode using /setlocation.');
-        return;
-      }
+      // if (!userSub?.substoreId) {
+      //   await this.bot.sendMessage(chatId, '❌ Sorry, we could not determine your delivery region for this pincode. Please try a different pincode using /setlocation.');
+      //   return;
+      // }
       try {
-        const substoreId = userSub.substoreId;
+        const substoreId = "66506004a7cddee1b8adb014";
         console.log(`[TG] Using substore ID for products: ${substoreId}`);
         const products = await getProductsByLocation(substoreId);
         if (products.length === 0) {
@@ -179,7 +181,7 @@ class TelegramService {
         }
 
         const keyboard = products.map(product => [{
-          text: `${product.name} - ₹${product.price} ${product.inventoryQuantity > 0 ? '🟢' : '🔴'}`,
+          text: `${product.name} - ₹${product.price} ${product.available === true ? '🟢' : '🔴'}`,
           callback_data: `product_${product.productId}`
         }]);
 
@@ -232,6 +234,7 @@ class TelegramService {
       const chatId = msg.chat.id;
       const text = msg.text;
       const username = msg.from?.username;
+      console.log(msg);
       console.log(`[TG] Message from ${username} (${chatId}): ${text}`);
       if (!username) return;
       const state = pendingEmails.get(chatId);
@@ -299,6 +302,8 @@ class TelegramService {
         console.log(`[TG] Trimmed state for lookup: '${state}'`);
         // Find substore by state name (case-insensitive)
         substoreDoc = await Substore.findOne({ name: new RegExp(`^${state}$`, 'i') });
+        console.log(await Substore.find({}));
+        
         console.log(`[TG] Substore lookup result for state '${state}':`, substoreDoc);
         if (substoreDoc) {
           substoreId = substoreDoc.substoreId;
@@ -444,7 +449,7 @@ class TelegramService {
         isActive: true
       });
 
-      if (product.inventoryQuantity > 0) {
+      if (product.available === true ) {
         // Product is in stock - show direct link
         const keyboard = [[{
           text: '🛒 Buy Now',
