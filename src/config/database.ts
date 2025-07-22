@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export const connectDB = async (): Promise<void> => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/amul-inventory';
+    const mongoURI = 'mongodb+srv://yjaybhaye1707:yash1234@cluster0.y155exh.mongodb.net/';
     
     await mongoose.connect(mongoURI, {
       dbName: 'amul-inventory'

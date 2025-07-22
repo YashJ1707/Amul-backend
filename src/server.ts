@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from '@/config/database';
-import { startCronJobs } from '@/services/cronService';
 import { fetchAndUpdateProducts } from '@/services/productService';
 import productRoutes from '@/routes/productRoutes';
 import subscriptionRoutes from '@/routes/subscriptionRoutes';
@@ -44,7 +43,7 @@ async function startServer(): Promise<void> {
     console.log('Initial data fetch completed');
     
     // Start cron jobs
-    startCronJobs();
+    // startCronJobs();
     
     // Start server
     app.listen(PORT, () => {
