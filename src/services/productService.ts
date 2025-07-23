@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Product } from '@/models/Product';
+import { Product } from '../models/Product';
 import { AmulProductData } from '@/types';
 import { notifySubscribers } from './emailService';
 
@@ -10,7 +10,7 @@ export const fetchAndUpdateProducts = async (): Promise<void> => {
     console.log('🔄 Fetching products from Amul API...');
     const response = await axios.get<{ data: AmulProductData[] }>(AMUL_API_URL);
     const products: AmulProductData[] = response.data.data;
-
+  
     let updatedCount = 0;
     let addedCount = 0;
     let restockedCount = 0;
@@ -24,7 +24,7 @@ export const fetchAndUpdateProducts = async (): Promise<void> => {
         
         if (wasOutOfStock && nowInStock) {
           console.log(`📦 Product ${productData.name} is back in stock!`);
-          await notifySubscribers(existingProduct, productData);
+          // await notifySubscribers(existingProduct, productData);
           restockedCount++;
         }
         

@@ -1,5 +1,5 @@
 // scripts/migrate-telegram-username.ts
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import { connectDB } from '@/config/database'; // Adjust path as needed
 import { Subscription } from '@/models/Subscription'; // Adjust path as needed
 import dotenv from 'dotenv';

@@ -1,8 +1,8 @@
-import { transporter } from '@/config/email';
-import { Subscription } from '@/models/Subscription';
+import { transporter } from '../config/email';
+import { Subscription } from '../models/Subscription';
 import { IProduct, AmulProductData } from '@/types';
-import { Product } from '@/models/Product';
-import { telegramService } from '@/services/telegramService';
+import { Product } from '../models/Product';
+import { telegramService } from '../services/telegramService';
 
 export const notifySubscribers = async (product: IProduct, updatedProductData: AmulProductData): Promise<void> => {
   try {

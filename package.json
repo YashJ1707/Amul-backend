@@ -12,8 +12,8 @@
     "clean": true
   },
   "scripts": {
-    "build": "tsup",
-    "start": "node dist/server.js",
+    "build": "tsc",
+    "start": "node dist/server.ts",
     "dev": "tsx src/server.ts",
     "prod": "pnpm run build && pnpm start",
     "type-check": "tsc --noEmit",

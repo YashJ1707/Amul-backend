@@ -2,8 +2,8 @@
 import axios from 'axios';
 import { IProduct } from '@/types';
 import TelegramBot from 'node-telegram-bot-api';
-import { Product } from '@/models/Product';
-import { Subscription } from '@/models/Subscription';
+import { Product } from '../models/Product';
+import { Subscription } from '../models/Subscription';
 import dotenv from 'dotenv';
 
 dotenv.config();
