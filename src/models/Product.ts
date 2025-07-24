@@ -7,6 +7,7 @@ const productSchema = new Schema<IProduct>({
   alias: { type: String, required: true },
   price: { type: Number, required: true },
   inventoryQuantity: { type: Number, default: 0 },
+  available: { type: Number, default: 0 },
   lastChecked: { type: Date, default: Date.now },
   image: { type: String },
   brand: { type: String },

@@ -120,7 +120,7 @@ bot.onText(/\/products/, async (msg) => {
 
     // Create inline keyboard buttons for products
     const keyboard = products.map(product => [{
-      text: `${product.inventoryQuantity > 0 ? '🟢' : '🔴'} ${product.name} - ₹${product.price} `,
+      text: `${product.available === 1 ? '🟢' : '🔴'} ${product.name} - ₹${product.price} `,
       callback_data: `product_${product.productId}`
     }]);
 
@@ -178,7 +178,7 @@ bot.on('callback_query', async (callbackQuery) => {
         isActive: true
       });
 
-      if (product.inventoryQuantity > 0) {
+      if (product.available === 1) {
         // Product is in stock - show direct link
         const keyboard = [[{
           text: '🛒 Buy Now',
@@ -355,7 +355,7 @@ bot.on('callback_query', async (callbackQuery) => {
           // Remove the product from the list
           const productText = `📦 <b>${product.name}</b>\n` +
                             `💰 Price: ₹${product.price}\n` +
-                            `📊 Stock: ${product.inventoryQuantity > 0 ? 'In Stock' : 'Out of Stock'}\n` +
+                            `📊 Stock: ${product.available === 1 ? 'In Stock' : 'Out of Stock'}\n` +
                             `🔗 <a href="https://shop.amul.com/en/product/${product.alias}">View Product</a>`;
           
           const newText = message.text?.replace(productText + '\n\n', '') || '';
@@ -456,7 +456,7 @@ bot.onText(/\/mysubscriptions/, async (msg) => {
 
       return `📦 <b>${product.name}</b>\n` +
              `💰 Price: ₹${product.price}\n` +
-             `📊 Stock: ${product.inventoryQuantity > 0 ? 'In Stock' : 'Out of Stock'}\n` +
+             `📊 Stock: ${product.available === 1 ? 'In Stock' : 'Out of Stock'}\n` +
              `🔗 <a href="https://shop.amul.com/en/product/${product.alias}">View Product</a>`;
     }).filter(Boolean).join('\n\n');
 

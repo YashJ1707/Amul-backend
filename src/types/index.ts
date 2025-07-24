@@ -6,6 +6,7 @@ export interface IProduct extends Document {
   alias: string;
   price: number;
   inventoryQuantity: number;
+  available: number;
   lastChecked: Date;
   image?: string;
   brand?: string;
@@ -28,6 +29,7 @@ export interface AmulProductData {
   inventory_quantity: number;
   images?: Array<{ image: string }>;
   brand?: string;
+  available: number;
 }
 
 export interface SubscribeRequest {
